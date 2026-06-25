@@ -1,0 +1,19 @@
+[Unit]
+Description=Gunicorn daemon for DasviClasses Django Backend
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/backend
+EnvironmentFile=/home/ubuntu/backend/.env
+ExecStart=/home/ubuntu/backend/venv/bin/gunicorn \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          --access-logfile /var/log/gunicorn/access.log \
+          --error-logfile /var/log/gunicorn/error.log \
+          dasvi_backend.wsgi:application
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
